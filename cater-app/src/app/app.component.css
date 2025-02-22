@@ -180,18 +180,18 @@
   font-style: normal;
 }
 
-/* Add user avatar placeholder */
 .testimonial-card span::before {
   content: '';
   display: inline-block;
   width: 32px;
   height: 32px;
-  background-color: #cbd5e1;
+  background-image: url('/Users/nishu/Documents/Software/FrontEnd/Cater/cater-app/src/assets/man.jpg');
+  background-size: cover; /* Resize image to cover container */
+  background-position: center;
   border-radius: 50%;
   margin-right: 10px;
   vertical-align: middle;
 }
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .testimonial-cards {
@@ -357,4 +357,101 @@
   .footer-social {
     justify-content: center;
   }
+}
+
+/* Chatbot Styles */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chatbot-toggle {
+  background: #4a90e2;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.chatbot-window {
+  width: 350px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+}
+
+.chatbot-window.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.chat-header {
+  background: #4a90e2;
+  color: white;
+  padding: 15px;
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.message {
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  max-width: 80%;
+}
+
+.message.bot {
+  background: #4a90e2;
+  color: white;
+  margin-left: auto;
+}
+
+.chat-input {
+  display: flex;
+  padding: 15px;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.chat-input button {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.close-btn{
+  color: black;
 }
