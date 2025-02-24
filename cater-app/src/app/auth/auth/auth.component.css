@@ -1,78 +1,52 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-
-body {
-    margin: 0;
-    padding: 0;
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                url('/Users/nishu/Documents/Software/FrontEnd/Cater/cater-app/src/assets/man.jpg') center/cover no-repeat;
-    min-height: 100vh;
-    font-family: "Roboto", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/* signup.component.css */
+.signup-container {
+    min-height: calc(100vh - 120px); /* Adjust based on footer height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #f8f9fa;
   }
-
-.login-page {
-  width: 580px;  /* Increased container width */
-  padding: 2% 0 0;
-  margin: auto;
-}
-
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 500px;  /* Increased form width */
-  margin: 0 auto 150px;
-  padding: 40px;  /* Increased internal padding */
-  text-align: center;
-  box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.3), 0 12px 12px 0 rgba(0, 0, 0, 0.25);
-  border-radius: 25px;  /* Larger rounded corners */
-}
-
-.form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 30px;  /* Increased spacing between fields */
-  padding: 22px;  /* Larger input padding */
-  box-sizing: border-box;
-  font-size: 18px;  /* Larger font size */
-  border-radius: 8px;  /* Rounded input corners */
-}
-
-.form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #2563eb;
-  width: 100%;
-  border: 0;
-  padding: 22px;  /* Larger button padding */
-  color: #FFFFFF;
-  font-size: 18px;  /* Larger button text */
-  font-weight: 500;
-  transition: all 0.3 ease;
-  cursor: pointer;
-  border-radius: 8px;  /* Rounded button corners */
-  margin-top: 15px;
-}
-
-.form button:hover {
-  background: #1e4bb8;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.form .message {
-  margin: 25px 0 0;
-  color: #666;
-  font-size: 14px;  /* Slightly larger message text */
-}
-
-.form .message a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-}
+  
+  .signup-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2d3436;
+    margin-bottom: 0.5rem;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+  }
+  
+  .login-link {
+    justify-content: center;
+    margin-top: 1.5rem;
+    color: #636e72;
+  }
+  
+  .login-link a {
+    color: #0984e3;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .mat-form-field-outline {
+    border-radius: 8px !important;
+  }

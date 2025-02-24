@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,6 +9,10 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthComponent } from './auth/auth/auth.component';
 import { HomeComponent } from './Home/home/home.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
  const routes:Routes=[
   {path:'',component:HomeComponent},
@@ -25,9 +30,15 @@ import { HomeComponent } from './Home/home/home.component';
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
     AgGridAngular,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
