@@ -1,0 +1,87 @@
+<!-- home.component.html -->
+<header class="header">
+    <nav class="nav">
+      <div class="logo">
+        <a  class="logo-link">
+          <span class="logo-text">Roomie</span>
+        </a>
+      </div>
+      <div class="nav-links">
+        <a>Home</a>
+        <a>How It Works</a>
+        <a>Browse</a>
+        <a class="btn" routerLink="/login">Login/Signup</a>
+      </div>
+    </nav>
+  </header>
+  
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Find Your Perfect Roommate</h1>
+        <p>Connect with compatible roommates in your city today!</p>
+        
+        <form class="search-form">
+          <input type="text" placeholder="Enter city or neighborhood">
+          <input type="date" placeholder="Move-in Date">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+    </section>
+  
+    <section class="features">
+      <h2>How Roomie Works</h2>
+      <div class="feature-cards">
+        <div class="feature-card">
+          <h3>Search</h3>
+          <p>Filter by location, budget, and preferences to find ideal matches</p>
+        </div>
+        <div class="feature-card">
+          <h3>Connect</h3>
+          <p>Message potential roommates and schedule meetups</p>
+        </div>
+        <div class="feature-card">
+          <h3>Move In</h3>
+          <p>Finalize details and start your new living arrangement</p>
+        </div>
+      </div>
+    </section>
+  
+    <section class="testimonials">
+      <h2>Success Stories</h2>
+      <div class="testimonial-cards">
+        <div class="testimonial-card">
+          <p>"Roomie helped me find my perfect match in just 2 weeks!"</p>
+          <span>- Steve, MSCS</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"I love how easy it was to connect with like-minded people."</p>
+          <span>- Nishal, MSCS</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  
+  <!-- Add this at the end of home.component.html -->
+  <div class="chatbot-container">
+    <div class="chatbot-window" [class.active]="isChatOpen">
+      <div class="chat-header">
+        <h4>Roomie AI Assistant</h4>
+        <button (click)="toggleChat()" class="close-btn">×</button>
+      </div>
+      <div class="chat-messages">
+        <div *ngFor="let message of messages" class="message" [class.bot]="message.isBot">
+          {{ message.text }}
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" [(ngModel)]="userInput" placeholder="Ask me anything..." (keyup.enter)="sendMessage()">
+        <button (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+    <button class="chatbot-toggle" (click)="toggleChat()">
+      <img src="/assets/chatbot-icon.svg" alt="Chat" width="30">
+    </button>
+  </div>
+  
