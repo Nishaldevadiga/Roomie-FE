@@ -13,16 +13,21 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { LoginComponent } from './Login/login/login.component';
+import { RoomsComponent } from './Rooms/rooms/rooms.component';
 
  const routes:Routes=[
   {path:'',component:HomeComponent},
-  {path:'login',component:AuthComponent}
+  {path:'login',component:AuthComponent},
+  {path:'Enter',component:LoginComponent}
 ]
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent,
+    RoomsComponent
   ],
   imports: [
     BrowserModule,

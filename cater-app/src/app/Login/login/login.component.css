@@ -1,0 +1,230 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px); /* Adjust for your header/footer */
+    padding: 2rem;
+    background-color: #f9fafb;
+  }
+  
+  .login-box {
+    width: 100%;
+    max-width: 480px;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .logo img {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .subtitle {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  
+  .welcome {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-group {
+    position: relative;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    transition: border-color 0.15s ease-in-out;
+  }
+  
+  .form-control:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  .form-control.invalid {
+    border-color: #ef4444;
+  }
+  
+  .error-message {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+  
+  .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+  
+  .remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  
+  .forgot-password {
+    color: #3b82f6;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-block {
+    width: 100%;
+  }
+  
+  .btn-primary {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2563eb;
+  }
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1rem 0;
+  }
+  
+  .divider-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #e5e7eb;
+  }
+  
+  .divider-text {
+    padding: 0 1rem;
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  
+  .btn-google {
+    background-color: white;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .btn-google:hover {
+    background-color: #f9fafb;
+  }
+  
+  .btn-google img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .signup-link {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+  
+  .signup-link a {
+    color: #3b82f6;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+
+  /* Add these new styles to your existing CSS */
+
+.api-error-message {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    color: #ef4444;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
