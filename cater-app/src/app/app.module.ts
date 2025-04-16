@@ -15,11 +15,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './Login/login/login.component';
 import { RoomsComponent } from './Rooms/rooms/rooms.component';
+import { MatSelectModule } from '@angular/material/select';
 
  const routes:Routes=[
   {path:'',component:HomeComponent},
   {path:'login',component:AuthComponent},
-  {path:'Enter',component:LoginComponent}
+  {path:'Enter',component:LoginComponent},
+  {path:'rooms',component:RoomsComponent}
 ]
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { RoomsComponent } from './Rooms/rooms/rooms.component';
     MatCardModule,
     MatIconModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [
     provideAnimationsAsync()

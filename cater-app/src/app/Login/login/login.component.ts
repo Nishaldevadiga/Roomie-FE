@@ -58,7 +58,7 @@ export class LoginComponent {
             }
             
             // Navigate to dashboard/home after successful login
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/rooms']);
             this.isLoading = false;
           },
           error: (error) => {
