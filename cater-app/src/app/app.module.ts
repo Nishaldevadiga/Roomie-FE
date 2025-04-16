@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthComponent } from './auth/auth/auth.component';
 import { HomeComponent } from './Home/home/home.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './Login/login/login.component';
 import { RoomsComponent } from './Rooms/rooms/rooms.component';
 import { MatSelectModule } from '@angular/material/select';
+import { AuthInterceptor } from './Interceptor/auth.interceptor';
 
  const routes:Routes=[
   {path:'',component:HomeComponent},
@@ -45,7 +46,12 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true  // This ensures that multiple interceptors can be used
+    }
   ],
   bootstrap: [AppComponent]
 })
