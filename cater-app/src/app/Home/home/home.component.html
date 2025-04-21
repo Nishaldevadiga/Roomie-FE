@@ -50,24 +50,33 @@
   
   
   <!-- Add this at the end of home.component.html -->
-  <div class="chatbot-container">
-    <div class="chatbot-window" [class.active]="isChatOpen">
-      <div class="chat-header">
-        <h4>Roomie AI Assistant</h4>
-        <button (click)="toggleChat()" class="close-btn">×</button>
+<div class="chatbot-container">
+  <div class="chatbot-window" [class.active]="isChatOpen">
+    <div class="chat-header">
+      <h4>Roomie AI Assistant</h4>
+      <button (click)="toggleChat()" class="close-btn">×</button>
+    </div>
+    <div class="chat-messages">
+      <div *ngFor="let message of messages" class="message" [class.bot]="message.isBot">
+        {{ message.text }}
       </div>
-      <div class="chat-messages">
-        <div *ngFor="let message of messages" class="message" [class.bot]="message.isBot">
-          {{ message.text }}
+      <div *ngIf="isLoading" class="message bot loading">
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </div>
-      <div class="chat-input">
-        <input type="text" [(ngModel)]="userInput" placeholder="Ask me anything..." (keyup.enter)="sendMessage()">
-        <button (click)="sendMessage()">Send</button>
-      </div>
     </div>
-    <button class="chatbot-toggle" (click)="toggleChat()">
-      <img src="/assets/chatbot-icon.svg" alt="Chat" width="30">
-    </button>
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="userInput" placeholder="Ask me anything..." 
+             (keyup.enter)="sendMessage()" [disabled]="isLoading">
+      <button (click)="sendMessage()" [disabled]="isLoading">
+        <i class="fas fa-paper-plane"></i> Send
+      </button>
+    </div>
   </div>
-  
+  <button class="chatbot-toggle" (click)="toggleChat()">
+    <img src="assets/chatbot-icon.svg" alt="Chat" width="30">
+  </button>
+</div>

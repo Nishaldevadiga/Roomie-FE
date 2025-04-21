@@ -17,6 +17,7 @@ import { LoginComponent } from './Login/login/login.component';
 import { RoomsComponent } from './Rooms/rooms/rooms.component';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthInterceptor } from './Interceptor/auth.interceptor';
+import { OpenaiService } from './service/openai.service';
 
  const routes:Routes=[
   {path:'',component:HomeComponent},
@@ -46,6 +47,7 @@ import { AuthInterceptor } from './Interceptor/auth.interceptor';
     MatSelectModule
   ],
   providers: [
+    OpenaiService,
     provideAnimationsAsync(),
     {
       provide: HTTP_INTERCEPTORS,
