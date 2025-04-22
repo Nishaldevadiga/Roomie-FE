@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 interface Provider {
   username: string;
-  email: string;
-  role: string;
-  phone_number: string;
   bio: string;
 }
 
 interface Room {
   id: number;
-  provider: Provider;
   title: string;
+  price: number;
   description: string;
-  price: string;
   location: string;
+  provider: Provider;
   is_available: boolean;
   created_at: string;
 }
@@ -27,10 +25,13 @@ interface Room {
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
-  loading: boolean = true;
+  loading = true;
   error: string | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fetchRooms();
@@ -38,22 +39,36 @@ export class RoomsComponent implements OnInit {
 
   fetchRooms(): void {
     this.loading = true;
-    this.http.get<Room[]>('http://127.0.0.1:8000/api/rooms/').subscribe(
-      (response) => {
-        this.rooms = Array.isArray(response) ? response : [response]; // Handle both array and single object responses
-        this.loading = false;
-        console.log('Rooms data:', this.rooms);
-      },
-      (error) => {
-        this.error = 'Error fetching rooms data';
-        this.loading = false;
-        console.error('Error fetching rooms:', error);
-      }
-    );
+    this.error = null;
+    
+    // Get the token from local storage
+    const token = localStorage.getItem('token');
+    
+    // Create headers with authorization if token exists
+    const headers = token ? 
+      new HttpHeaders().set('Authorization', `Token ${token}`) : 
+      new HttpHeaders();
+    
+    this.http.get<Room[]>('http://127.0.0.1:8000/api/rooms/', { headers })
+      .subscribe({
+        next: (data) => {
+          this.rooms = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Failed to load rooms. Please try again later.';
+          this.loading = false;
+          console.error('Error fetching rooms:', err);
+        }
+      });
   }
-  
+
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+    return new Date(dateString).toLocaleDateString();
+  }
+
+  viewRoomDetails(roomId: number): void {
+    // Navigate to room detail view
+    this.router.navigate(['/roomview', roomId]);
   }
 }

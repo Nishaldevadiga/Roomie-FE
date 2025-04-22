@@ -1,49 +1,54 @@
 <div class="rooms-container">
-    <h2>Available Rooms</h2>
-    
-    <!-- Loading state -->
-    <div *ngIf="loading" class="loading">
-      <p>Loading rooms...</p>
-    </div>
-    
-    <!-- Error state -->
-    <div *ngIf="error" class="error-message">
-      <p>{{ error }}</p>
-    </div>
+  <h2>Available Rooms</h2>
   
-    <!-- No rooms found -->
-    <div *ngIf="!loading && !error && rooms.length === 0" class="no-rooms">
-      <p>No rooms available at this time.</p>
-    </div>
-    
-    <!-- Rooms grid -->
-    <div class="rooms-grid" *ngIf="!loading && !error && rooms.length > 0">
-      <div class="room-card" *ngFor="let room of rooms">
-        <div class="card-header">
-          <h3>{{ room.title }}</h3>
-          <span class="price">${{ room.price }}</span>
-        </div>
-        
-        <div class="card-body">
-          <p class="description">{{ room.description }}</p>
-          <div class="location">
-            <i class="fas fa-map-marker-alt"></i> {{ room.location }}
-          </div>
-          
-          <div class="provider-info">
-            <p><strong>Provider:</strong> {{ room.provider.username }}</p>
-            <p><small>{{ room.provider.bio }}</small></p>
-          </div>
-        </div>
-        
-        <div class="card-footer">
-          <span class="availability" [class.available]="room.is_available" [class.unavailable]="!room.is_available">
-            {{ room.is_available ? 'Available' : 'Not Available' }}
-          </span>
-          <span class="date">Listed on: {{ formatDate(room.created_at) }}</span>
-        </div>
-        
-        <button class="contact-btn">Contact Provider</button>
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading">
+    <p>Loading rooms...</p>
+  </div>
+  
+  <!-- Error message -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- No rooms found -->
+  <div *ngIf="!loading && !error && rooms.length === 0" class="no-rooms">
+    <p>No rooms available at this time.</p>
+  </div>
+  
+  <!-- Rooms grid -->
+  <div class="rooms-grid" *ngIf="!loading && !error && rooms.length > 0">
+    <div class="room-card" *ngFor="let room of rooms">
+      <div class="card-header">
+        <h3>{{ room.title }}</h3>
+        <span class="price">${{ room.price }}</span>
       </div>
+      
+      <div class="card-body">
+        <p class="description">{{ room.description }}</p>
+        <div class="location">
+          <i class="fas fa-map-marker-alt"></i> {{ room.location }}
+        </div>
+        
+        <div class="provider-info">
+          <p><strong>Provider:</strong> {{ room.provider.username }}</p>
+          <p><small>{{ room.provider.bio }}</small></p>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <span class="availability" [class.available]="room.is_available" [class.unavailable]="!room.is_available">
+          {{ room.is_available ? 'Available' : 'Not Available' }}
+        </span>
+        <span class="date">Listed on: {{ formatDate(room.created_at) }}</span>
+      </div>
+      
+      <button 
+        class="contact-btn" 
+        [disabled]="!room.is_available" 
+        (click)="viewRoomDetails(room.id)">
+        View Details
+      </button>
     </div>
   </div>
+</div>

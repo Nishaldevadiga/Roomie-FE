@@ -18,12 +18,14 @@ import { RoomsComponent } from './Rooms/rooms/rooms.component';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthInterceptor } from './Interceptor/auth.interceptor';
 import { OpenaiService } from './service/openai.service';
+import { RoomviewComponent } from './RoomView/roomview/roomview.component';
 
  const routes:Routes=[
   {path:'',component:HomeComponent},
   {path:'login',component:AuthComponent},
   {path:'Enter',component:LoginComponent},
-  {path:'rooms',component:RoomsComponent}
+  {path:'rooms',component:RoomsComponent},
+  { path: 'roomview/:id', component: RoomviewComponent }
 ]
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { OpenaiService } from './service/openai.service';
     AuthComponent,
     HomeComponent,
     LoginComponent,
-    RoomsComponent
+    RoomsComponent,
+    RoomviewComponent
   ],
   imports: [
     BrowserModule,
