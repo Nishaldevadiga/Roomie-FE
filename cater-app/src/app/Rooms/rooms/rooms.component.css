@@ -508,3 +508,77 @@
   background-color: rgba(255, 255, 0, 0.3);
   font-weight: bold;
 }
+
+/* Add these styles to your existing CSS */
+
+/* Top bar layout */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Logout button styles */
+.logout-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 15px;
+}
+
+/* Improved Logout Button Styles */
+.logout-btn {
+  background-color: #4a6fa5; /* Match the contact-btn color for consistency */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn i {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.logout-btn:hover {
+  background-color: #3a5a80; /* Darkened hover state, matching contact button hover */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.logout-btn:active {
+  transform: translateY(0px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhance logout container positioning */
+.logout-container {
+  display: flex;
+  justify-content: flex-end;
+  align-self: center;
+  margin-left: 15px;
+}
+
+/* Responsive adjustments for the logout button */
+@media (max-width: 768px) {
+  .logout-container {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .logout-btn {
+    width: 100%;
+    padding: 12px 16px;
+  }
+}

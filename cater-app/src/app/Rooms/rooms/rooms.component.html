@@ -1,25 +1,34 @@
 <div class="rooms-container">
-  <div class="rooms-header">
-    <h2>Available Rooms</h2>
-    
-    <!-- Search bar -->
-    <div class="search-container">
-      <div class="search-input-group">
-        <i class="fas fa-search search-icon"></i>
-        <input 
-          type="text" 
-          [formControl]="searchControl"
-          placeholder="Search rooms by title, location, or provider..." 
-          class="search-input"
-        >
-        <button 
-          *ngIf="searchTerm" 
-          class="clear-search-btn"
-          (click)="clearSearch()"
-        >
-          <i class="fas fa-times"></i>
-        </button>
+  <div class="top-bar">
+    <div class="rooms-header">
+      <h2>Available Rooms</h2>
+      
+      <!-- Search bar -->
+      <div class="search-container">
+        <div class="search-input-group">
+          <i class="fas fa-search search-icon"></i>
+          <input 
+            type="text" 
+            [formControl]="searchControl"
+            placeholder="Search rooms...." 
+            class="search-input"
+          >
+          <button 
+            *ngIf="searchTerm" 
+            class="clear-search-btn"
+            (click)="clearSearch()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
       </div>
+    </div>
+    
+    <!-- Logout button -->
+    <div class="logout-container">
+      <button class="logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
     </div>
   </div>
   

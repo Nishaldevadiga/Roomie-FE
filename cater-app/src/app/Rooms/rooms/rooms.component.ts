@@ -45,12 +45,15 @@ export class RoomsComponent implements OnInit {
   ) {}
   
   canDeactivate(): boolean {
+    // Don't show confirmation when logging out
+    if (this.router.url === '/Enter') {
+      return true;
+    }
     return window.confirm('Are you sure you want to leave the Rooms page?');
   }
 
   ngOnInit(): void {
     this.fetchRooms();
-    
     
     this.searchControl.valueChanges
       .pipe(
@@ -68,7 +71,6 @@ export class RoomsComponent implements OnInit {
     this.error = null;
     
     const token = localStorage.getItem('token');
-    
     
     const headers = token ? 
       new HttpHeaders().set('Authorization', `Token ${token}`) : 
@@ -116,12 +118,38 @@ export class RoomsComponent implements OnInit {
   }
 
   viewRoomDetails(roomId: number): void {
-    
     this.router.navigate(['/roomview', roomId]);
   }
 
   getRoomImage(room: Room): string {
-    
     return room.image || this.defaultImage;
+  }
+  
+  logout(): void {
+    // Remove token and user info from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
+    
+    // Optional: Call logout API endpoint if your backend requires it
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Token ${token}`);
+      this.http.post('http://127.0.0.1:8000/api/auth/logout/', {}, { headers })
+        .subscribe({
+          next: () => {
+            console.log('Logged out successfully');
+          },
+          error: (err) => {
+            console.error('Error during logout:', err);
+          },
+          complete: () => {
+            // Navigate to Enter page
+            this.router.navigate(['/Enter']);
+          }
+        });
+    } else {
+      // If no token, just navigate to Enter page
+      this.router.navigate(['/Enter']);
+    }
   }
 }
