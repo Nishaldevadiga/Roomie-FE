@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { CanDeactivateGuard } from '../../Gaurds/candeactivate.guard';
 
 interface Provider {
   username: string;
@@ -27,27 +30,46 @@ interface Room {
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
+  filteredRooms: Room[] = [];
   loading = true;
   error: string | null = null;
-  defaultImage = './assets/room.jpg'; // Path to default image
+  defaultImage = './assets/room.jpg';
+  
+  // Search functionality
+  searchControl = new FormControl('');
+  searchTerm: string = '';
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) {}
+  
+  canDeactivate(): boolean {
+    return window.confirm('Are you sure you want to leave the Rooms page?');
+  }
 
   ngOnInit(): void {
     this.fetchRooms();
+    
+    
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
+        this.searchTerm = value || '';
+        this.filterRooms();
+      });
   }
 
   fetchRooms(): void {
     this.loading = true;
     this.error = null;
     
-    // Get the token from local storage
     const token = localStorage.getItem('token');
     
-    // Create headers with authorization if token exists
+    
     const headers = token ? 
       new HttpHeaders().set('Authorization', `Token ${token}`) : 
       new HttpHeaders();
@@ -56,6 +78,7 @@ export class RoomsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.rooms = data;
+          this.filteredRooms = data; 
           this.loading = false;
         },
         error: (err) => {
@@ -66,17 +89,39 @@ export class RoomsComponent implements OnInit {
       });
   }
 
+  filterRooms(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredRooms = this.rooms;
+      return;
+    }
+    
+    const term = this.searchTerm.toLowerCase().trim();
+    
+    this.filteredRooms = this.rooms.filter(room => {
+      return (
+        room.title.toLowerCase().includes(term) ||
+        room.description.toLowerCase().includes(term) ||
+        room.location.toLowerCase().includes(term) ||
+        room.provider.username.toLowerCase().includes(term)
+      );
+    });
+  }
+
+  clearSearch(): void {
+    this.searchControl.setValue('');
+  }
+
   formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString();
   }
 
   viewRoomDetails(roomId: number): void {
-    // Navigate to room detail view
+    
     this.router.navigate(['/roomview', roomId]);
   }
 
   getRoomImage(room: Room): string {
-    // Return room image if exists, otherwise default image
+    
     return room.image || this.defaultImage;
   }
 }

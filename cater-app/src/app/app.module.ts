@@ -19,12 +19,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuthInterceptor } from './Interceptor/auth.interceptor';
 import { OpenaiService } from './service/openai.service';
 import { RoomviewComponent } from './RoomView/roomview/roomview.component';
+import { CanDeactivateGuard } from './Gaurds/candeactivate.guard';
 
  const routes:Routes=[
   {path:'',component:HomeComponent},
   {path:'login',component:AuthComponent},
   {path:'Enter',component:LoginComponent},
-  {path:'rooms',component:RoomsComponent},
+  {path:'rooms',component:RoomsComponent,canDeactivate: [CanDeactivateGuard] },
   { path: 'roomview/:id', component: RoomviewComponent }
 ]
 @NgModule({

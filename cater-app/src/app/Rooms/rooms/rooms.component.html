@@ -1,5 +1,27 @@
 <div class="rooms-container">
-  <h2>Available Rooms</h2>
+  <div class="rooms-header">
+    <h2>Available Rooms</h2>
+    
+    <!-- Search bar -->
+    <div class="search-container">
+      <div class="search-input-group">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          [formControl]="searchControl"
+          placeholder="Search rooms by title, location, or provider..." 
+          class="search-input"
+        >
+        <button 
+          *ngIf="searchTerm" 
+          class="clear-search-btn"
+          (click)="clearSearch()"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
   
   <!-- Loading state -->
   <div *ngIf="loading" class="loading">
@@ -12,13 +34,19 @@
   </div>
 
   <!-- No rooms found -->
-  <div *ngIf="!loading && !error && rooms.length === 0" class="no-rooms">
-    <p>No rooms available at this time.</p>
+  <div *ngIf="!loading && !error && filteredRooms.length === 0" class="no-rooms">
+    <p *ngIf="searchTerm">No rooms matching "{{ searchTerm }}". Try different search terms or <a href="#" (click)="clearSearch(); $event.preventDefault()">clear search</a>.</p>
+    <p *ngIf="!searchTerm">No rooms available at this time.</p>
+  </div>
+  
+  <!-- Search results summary -->
+  <div *ngIf="searchTerm && filteredRooms.length > 0" class="search-results-info">
+    <p>Found {{ filteredRooms.length }} {{ filteredRooms.length === 1 ? 'room' : 'rooms' }} matching "{{ searchTerm }}"</p>
   </div>
   
   <!-- Rooms grid -->
-  <div class="rooms-grid" *ngIf="!loading && !error && rooms.length > 0">
-    <div class="room-card" *ngFor="let room of rooms">
+  <div class="rooms-grid" *ngIf="!loading && !error && filteredRooms.length > 0">
+    <div class="room-card" *ngFor="let room of filteredRooms">
       <!-- Room image -->
       <div class="room-image">
         <img [src]="getRoomImage(room)" alt="{{ room.title }}">
