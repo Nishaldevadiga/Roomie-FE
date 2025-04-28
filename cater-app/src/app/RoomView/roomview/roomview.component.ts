@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface Provider {
   username: string;
@@ -18,6 +19,7 @@ interface Room {
   provider: Provider;
   is_available: boolean;
   created_at: string;
+  image?: string; // Optional image property
 }
 
 @Component({
@@ -30,15 +32,25 @@ export class RoomviewComponent implements OnInit {
   room: Room | null = null;
   loading: boolean = true;
   error: string | null = null;
-  contactStatus: 'initial' | 'processing' | 'success' | 'error' = 'initial';
-  contactError: string | null = null;
-  isLoggedIn: boolean = true;
+  defaultImage = './assets/room.jpg'; // Path to default image
+  showMessageWindow: boolean = false;
+  messageForm: FormGroup;
+  sendingMessage: boolean = false;
+  messageSent: boolean = false;
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    // Initialize the form
+    this.messageForm = this.fb.group({
+      message: ['', [Validators.required, Validators.minLength(10)]],
+      contactMethod: ['email', Validators.required],
+      contactInfo: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit(): void {
     // Get room ID from route params
@@ -46,9 +58,6 @@ export class RoomviewComponent implements OnInit {
       this.roomId = +params['id']; // Convert to number
       this.fetchRoomDetails();
     });
-
-    // Check if user is logged in
-    this.isLoggedIn = !!localStorage.getItem('token');
   }
 
   fetchRoomDetails(): void {
@@ -56,8 +65,6 @@ export class RoomviewComponent implements OnInit {
     
     // Get the token from local storage
     const token = localStorage.getItem('token');
-
-    this.isLoggedIn=token?true:false;
     
     // Create headers with authorization if token exists
     const headers = token ? 
@@ -89,38 +96,96 @@ export class RoomviewComponent implements OnInit {
   }
 
   contactProvider(): void {
-    if (!this.isLoggedIn) {
-      this.router.navigate(['/login'], { 
-        queryParams: { redirect: `/roomview/${this.roomId}` } 
+    // Toggle the message window
+    this.showMessageWindow = true;
+  }
+
+  closeMessageWindow(): void {
+    this.showMessageWindow = false;
+    this.messageSent = false;
+    this.messageForm.reset({
+      message: '',
+      contactMethod: 'email',
+      contactInfo: ''
+    });
+  }
+
+  sendMessage(): void {
+    if (this.messageForm.invalid) {
+      // Mark all fields as touched to trigger validation messages
+      Object.keys(this.messageForm.controls).forEach(key => {
+        const control = this.messageForm.get(key);
+        control?.markAsTouched();
       });
       return;
     }
 
-    this.contactStatus = 'processing';
-    this.contactError = null;
-    
-    // Here we'll implement a simple contact system using JavaScript's alert for demonstration
-    // In a real app, you might implement a messaging system or initiate a booking
-    
-    // Simulate a contact process
+    this.sendingMessage = true;
+
+    // Simulate sending a message with a delay
     setTimeout(() => {
-      this.contactStatus = 'success';
-      alert(`Contact request sent to ${this.room?.provider.username}. They will reach out to you soon!`);
-    }, 1000);
+      // In a real app, you would send this to your API
+      const messageData = {
+        room_id: this.roomId,
+        provider_username: this.room?.provider.username,
+        message: this.messageForm.value.message,
+        contact_method: this.messageForm.value.contactMethod,
+        contact_info: this.messageForm.value.contactInfo
+      };
+      
+      console.log('Message sent:', messageData);
+      
+      // Show success state
+      this.sendingMessage = false;
+      this.messageSent = true;
+      
+      // Reset form after successful send
+      this.messageForm.reset({
+        message: '',
+        contactMethod: 'email',
+        contactInfo: ''
+      });
+      
+      // Close window after a delay
+      setTimeout(() => {
+        this.closeMessageWindow();
+      }, 3000);
+    }, 1500);
     
-    // In a real implementation, you would track the contact in your backend:
-    // this.http.post(`http://127.0.0.1:8000/api/contact/${this.roomId}/`, {}, 
-    //   { headers: new HttpHeaders().set('Authorization', `Token ${localStorage.getItem('token')}`) }
-    // ).subscribe({
-    //   next: () => {
-    //     this.contactStatus = 'success';
-    //   },
-    //   error: (err) => {
-    //     this.contactStatus = 'error';
-    //     this.contactError = 'Failed to contact provider. Please try again later.';
-    //     console.error('Error contacting provider:', err);
-    //   }
-    // });
+    // In real implementation, you would use HTTP POST:
+    /*
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Token ${token}`);
+    
+    this.http.post('http://127.0.0.1:8000/api/messages/', {
+      room_id: this.roomId,
+      message: this.messageForm.value.message,
+      contact_method: this.messageForm.value.contactMethod,
+      contact_info: this.messageForm.value.contactInfo
+    }, { headers }).subscribe({
+      next: (response) => {
+        this.sendingMessage = false;
+        this.messageSent = true;
+        
+        // Reset form after successful send
+        this.messageForm.reset({
+          message: '',
+          contactMethod: 'email',
+          contactInfo: ''
+        });
+        
+        // Close window after a delay
+        setTimeout(() => {
+          this.closeMessageWindow();
+        }, 3000);
+      },
+      error: (err) => {
+        this.sendingMessage = false;
+        console.error('Error sending message:', err);
+        // Handle error state
+      }
+    });
+    */
   }
 
   formatDate(dateString: string | undefined): string {
@@ -130,5 +195,10 @@ export class RoomviewComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/rooms']);
+  }
+  
+  getRoomImage(): string {
+    // Return room image if exists, otherwise default image
+    return this.room?.image || this.defaultImage;
   }
 }

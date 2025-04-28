@@ -19,6 +19,11 @@
   <!-- Rooms grid -->
   <div class="rooms-grid" *ngIf="!loading && !error && rooms.length > 0">
     <div class="room-card" *ngFor="let room of rooms">
+      <!-- Room image -->
+      <div class="room-image">
+        <img [src]="getRoomImage(room)" alt="{{ room.title }}">
+      </div>
+      
       <div class="card-header">
         <h3>{{ room.title }}</h3>
         <span class="price">${{ room.price }}</span>

@@ -1,79 +1,130 @@
 <div class="room-view-container">
-    <!-- Back button -->
-    <button class="back-btn" (click)="goBack()">
-      <i class="fas fa-arrow-left"></i> Back to Rooms
-    </button>
+  <!-- Back button -->
+  <button class="back-btn" (click)="goBack()">
+    <i class="fas fa-arrow-left"></i> Back to Rooms
+  </button>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading">
+    <p>Loading room details...</p>
+  </div>
   
-    <!-- Loading state -->
-    <div *ngIf="loading" class="loading">
-      <p>Loading room details...</p>
+  <!-- Error message -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Room details -->
+  <div *ngIf="!loading && !error && room" class="room-details">
+    <!-- Room image -->
+    <div class="room-image">
+      <img [src]="getRoomImage()" alt="{{ room.title }}">
     </div>
     
-    <!-- Error message -->
-    <div *ngIf="error" class="error-message">
-      <p>{{ error }}</p>
+    <div class="room-header">
+      <h1>{{ room.title }}</h1>
+      <span class="price">${{ room.price }}/night</span>
     </div>
-  
-    <!-- Room details -->
-    <div *ngIf="!loading && !error && room" class="room-details">
-      <div class="room-header">
-        <h1>{{ room.title }}</h1>
-        <span class="price">${{ room.price }}/night</span>
-      </div>
-      
-      <div class="room-body">
-        <div class="main-info">
-          <div class="location-info">
-            <i class="fas fa-map-marker-alt"></i> {{ room.location }}
-          </div>
-          
-          <div class="availability-tag" [class.available]="room.is_available" [class.unavailable]="!room.is_available">
-            {{ room.is_available ? 'Available' : 'Not Available' }}
-          </div>
-          
-          <p class="listing-date">Listed on: {{ formatDate(room.created_at) }}</p>
-          
-          <h3>Description</h3>
-          <p class="description">{{ room.description }}</p>
+    
+    <div class="room-body">
+      <div class="main-info">
+        <div class="location-info">
+          <i class="fas fa-map-marker-alt"></i> {{ room.location }}
         </div>
         
-        <div class="provider-details">
-          <h3>About the Provider</h3>
-          <p><strong>Name:</strong> {{ room.provider.username }}</p>
-          <p>{{ room.provider.bio }}</p>
+        <div class="availability-tag" [class.available]="room.is_available" [class.unavailable]="!room.is_available">
+          {{ room.is_available ? 'Available' : 'Not Available' }}
+        </div>
+        
+        <p class="listing-date">Listed on: {{ formatDate(room.created_at) }}</p>
+        
+        <h3>Description</h3>
+        <p class="description">{{ room.description }}</p>
+      </div>
+      
+      <div class="provider-details">
+        <h3>About the Provider</h3>
+        <p><strong>Name:</strong> {{ room.provider.username }}</p>
+        <p>{{ room.provider.bio }}</p>
+        
+        <div class="contact-section">
+          <h3>Contact the Provider</h3>
           
-          <div class="contact-section">
-            <h3>Contact the Provider</h3>
-            
-            <!-- <div *ngIf="!isLoggedIn" class="login-prompt">
-              <p>Please <a [routerLink]="['/login']" [queryParams]="{redirect: '/roomview/' + roomId}">log in</a> to contact the provider.</p>
-            </div> -->
-            
-            <div *ngIf="isLoggedIn">
-              <div *ngIf="contactStatus === 'initial' || contactStatus === 'error'">
-                <p *ngIf="room.is_available">Interested in this room? Contact the provider to learn more or make a booking.</p>
-                <p *ngIf="!room.is_available" class="unavailable-message">This room is currently not available for booking.</p>
-                
-                <button 
-                  class="contact-btn" 
-                  [disabled]="!room.is_available || contactStatus === 'processing'" 
-                  (click)="contactProvider()">
-                  Contact Provider
-                </button>
-                
-                <p *ngIf="contactError" class="error-text">{{ contactError }}</p>
-              </div>
-              
-              <div *ngIf="contactStatus === 'processing'" class="processing">
-                <p>Sending your request...</p>
-              </div>
-              
-              <div *ngIf="contactStatus === 'success'" class="success-message">
-                <p>Your contact request has been sent! The provider will get back to you soon.</p>
-              </div>
-            </div>
-          </div>
+          <!-- Contact button -->
+          <button class="contact-btn" (click)="contactProvider()">
+            Contact Provider
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Message overlay window -->
+  <div class="message-overlay" *ngIf="showMessageWindow">
+    <div class="message-window">
+      <div class="message-header">
+        <h3>Message to {{ room?.provider.username }}</h3>
+        <button class="close-btn" (click)="closeMessageWindow()">&times;</button>
+      </div>
+      
+      <div class="message-body">
+        <!-- Success message -->
+        <div *ngIf="messageSent" class="success-message">
+          <i class="fas fa-check-circle"></i>
+          <p>Your message has been sent successfully! The provider will contact you soon.</p>
+        </div>
+        
+        <!-- Message form -->
+        <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" *ngIf="!messageSent">
+          <div class="form-group">
+            <label for="message">Your message:</label>
+            <textarea 
+              id="message" 
+              formControlName="message" 
+              rows="5" 
+              placeholder="Write your message here..."
+            ></textarea>
+            <div class="validation-error" *ngIf="messageForm.get('message')?.invalid && messageForm.get('message')?.touched">
+              Please enter a message (minimum 10 characters).
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="contactMethod">How should the provider contact you?</label>
+            <select id="contactMethod" formControlName="contactMethod">
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="contactInfo">
+              {{ messageForm.value.contactMethod === 'email' ? 'Your email address:' : 'Your phone number:' }}
+            </label>
+            <input 
+              type="{{ messageForm.value.contactMethod === 'email' ? 'email' : 'tel' }}" 
+              id="contactInfo" 
+              formControlName="contactInfo" 
+              placeholder="{{ messageForm.value.contactMethod === 'email' ? 'Enter your email' : 'Enter your phone number' }}"
+            >
+            <div class="validation-error" *ngIf="messageForm.get('contactInfo')?.invalid && messageForm.get('contactInfo')?.touched">
+              Please provide valid contact information.
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" (click)="closeMessageWindow()">Cancel</button>
+            <button 
+              type="submit" 
+              class="send-btn" 
+              [disabled]="sendingMessage"
+            >
+              <span *ngIf="!sendingMessage">Send Message</span>
+              <span *ngIf="sendingMessage">Sending...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

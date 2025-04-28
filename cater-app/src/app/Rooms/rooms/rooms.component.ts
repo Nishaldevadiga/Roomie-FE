@@ -16,6 +16,8 @@ interface Room {
   provider: Provider;
   is_available: boolean;
   created_at: string;
+  // Optional image property in case API returns it in the future
+  image?: string;
 }
 
 @Component({
@@ -27,6 +29,7 @@ export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
   loading = true;
   error: string | null = null;
+  defaultImage = './assets/room.jpg'; // Path to default image
 
   constructor(
     private http: HttpClient,
@@ -70,5 +73,10 @@ export class RoomsComponent implements OnInit {
   viewRoomDetails(roomId: number): void {
     // Navigate to room detail view
     this.router.navigate(['/roomview', roomId]);
+  }
+
+  getRoomImage(room: Room): string {
+    // Return room image if exists, otherwise default image
+    return room.image || this.defaultImage;
   }
 }
