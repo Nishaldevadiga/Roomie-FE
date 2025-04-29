@@ -1,2 +1,2 @@
 # Cater
-CATER PROJECT
+Roomie - Frontend Using Angular, Html, css, bootstrap.
